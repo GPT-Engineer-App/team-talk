@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { CircleUser, Menu, Package2 } from "lucide-react";
+import { CircleUser, Menu, Package2, ChevronDown, ChevronRight, Hash, User } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { navItems } from "../App";
+import { useState } from "react";
 
 const Layout = () => {
   return (
@@ -40,19 +41,51 @@ const Sidebar = () => (
           <span>Acme Inc</span>
         </NavLink>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 overflow-auto">
         <nav className="grid items-start px-2 text-sm font-medium lg:px-4 gap-2">
-          {navItems.map((item) => (
-            <SidebarNavLink key={item.to} to={item.to}>
-              {item.icon}
-              {item.title}
+          <SidebarSection title="Channels">
+            <SidebarNavLink to="/general">
+              <Hash className="h-4 w-4" />
+              general
             </SidebarNavLink>
-          ))}
+            <SidebarNavLink to="/random">
+              <Hash className="h-4 w-4" />
+              random
+            </SidebarNavLink>
+          </SidebarSection>
+          <SidebarSection title="Direct Messages">
+            <SidebarNavLink to="/john-doe">
+              <User className="h-4 w-4" />
+              John Doe
+            </SidebarNavLink>
+            <SidebarNavLink to="/jane-smith">
+              <User className="h-4 w-4" />
+              Jane Smith
+            </SidebarNavLink>
+          </SidebarSection>
         </nav>
       </div>
+      <UserProfile />
     </div>
   </div>
 );
+
+const SidebarSection = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between w-full px-3 py-2 text-left text-muted-foreground hover:text-foreground"
+      >
+        <span>{title}</span>
+        {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+      </button>
+      {isOpen && <div className="pl-4">{children}</div>}
+    </div>
+  );
+};
 
 const MobileSidebar = () => (
   <Sheet>
@@ -112,6 +145,16 @@ const SidebarNavLink = ({ to, children }) => (
   >
     {children}
   </NavLink>
+);
+
+const UserProfile = () => (
+  <div className="flex items-center gap-3 p-4 border-t">
+    <CircleUser className="h-8 w-8 text-muted-foreground" />
+    <div>
+      <div className="text-sm font-medium">You</div>
+      <div className="text-xs text-muted-foreground">Online</div>
+    </div>
+  </div>
 );
 
 export default Layout;

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Paperclip, Smile } from "lucide-react";
 
 const Index = () => {
   const [selectedChannel, setSelectedChannel] = useState("general");
@@ -25,7 +26,7 @@ const Index = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <header className="flex items-center justify-between p-4 border-b">
+      <header className="sticky top-0 flex items-center justify-between p-4 border-b bg-background z-10">
         <h1 className="text-xl font-semibold">#{selectedChannel}</h1>
         <div>Channel details</div>
       </header>
@@ -50,12 +51,18 @@ const Index = () => {
       </ScrollArea>
       <footer className="p-4 border-t">
         <div className="flex items-center space-x-4">
+          <Button variant="outline" size="icon">
+            <Paperclip className="h-5 w-5" />
+          </Button>
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message"
             className="flex-1"
           />
+          <Button variant="outline" size="icon">
+            <Smile className="h-5 w-5" />
+          </Button>
           <Button onClick={handleSendMessage}>Send</Button>
         </div>
       </footer>
